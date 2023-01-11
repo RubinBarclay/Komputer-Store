@@ -18,12 +18,16 @@
         <div class="h-100 row row-cols-2 justify-content-md-center align-content-center">
             <section class="col-md-3 m-4 p-4 rounded bg-light">
                 <h2>Joe Banker</h2>
-                <div class="d-flex justify-content-between">
-                    <p>Balance:</p>
-                    <p>200 kr</p>
-                </div>
+                <p class="d-flex justify-content-between mb-1">
+                    <span>Balance:</span>
+                    <span id="balance"></span>
+                </p>
+                <p class="d-flex justify-content-between">
+                    <span>Outstanding loan:</span>
+                    <span id="outstandingLoan"></span>
+                </p>
                 <div class="d-grid">
-                    <button class="btn btn-success">Get a loan</button>
+                    <button id="getLoan" class="btn btn-success">Get a loan</button>
                 </div>
             </section>
             <section class="col-md-3 m-4 p-4 rounded bg-light">
@@ -43,5 +47,7 @@
             <section class="col-md-9 m-4 p-4 rounded bg-light">Laptop info</section>
         </div>
     </main>
+
+    <script src="app.js"></script>
 </body>
 </html>
