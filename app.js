@@ -15,6 +15,7 @@ const workElement = document.getElementById("work");
 const transferElement = document.getElementById("transfer");
 const repayLoanWrapperElement = document.getElementById("repayLoanWrapper");
 const repayLoanElement = document.getElementById("repayLoan");
+const dropdownElement = document.getElementById("dropdown");
 
 // SECTION 1: BANK
 
@@ -103,4 +104,68 @@ function payBackLoan() {
 
     outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
     payElement.innerHTML = formatCurrency(pay);
+}
+
+// LAPTOP SELECTION
+dropdownElement.addEventListener("change", selectLaptop);
+
+const featureListElement = document.getElementById("featureList");
+
+const laptopData = await fetchLaptopData();
+
+async function fetchLaptopData() {
+    try {
+        const response = await fetch("https://hickory-quilled-actress.glitch.me/computers");
+        const data = await response.json();
+
+        for (let laptop of data) {
+            const optionElement = document.createElement("option");
+            optionElement.innerText = laptop.title;
+            optionElement.value = laptop.id;
+
+            dropdownElement.appendChild(optionElement);
+        }
+
+        return data;
+    } 
+    
+    catch (error) {
+        console.error(error);
+    }
+}
+const infoWrapperElement = document.getElementById("infoWrapper");
+const imageWrapperElement = document.getElementById("imageWrapper");
+const laptopTitleElement = document.getElementById("laptopTitle");
+const laptopDescriptionElement = document.getElementById("laptopDescription");
+const laptopPriceElement = document.getElementById("laptopPrice");
+
+function selectLaptop(event) {
+    featureListElement.innerHTML = "";
+
+    if (event.target.value === "placeholder") {
+        infoWrapperElement.classList.add("invisible");
+        return;
+    }
+
+    const index = event.target.value - 1;
+    const laptop = laptopData[index];
+    const imageURL = "https://hickory-quilled-actress.glitch.me/" + laptop.image;
+
+    for (let feature of laptop.specs) {
+        const listElement = document.createElement("li");
+        listElement.innerText = feature;
+        featureListElement.appendChild(listElement);
+    }
+
+    const imageElement = document.createElement("img");
+    imageElement.setAttribute("src", imageURL);
+    imageElement.classList.add("img-fluid");
+    imageWrapperElement.innerHTML = "";
+    imageWrapperElement.appendChild(imageElement);
+
+    laptopTitleElement.innerText = laptop.title;
+    laptopDescriptionElement.innerText = laptop.description;
+    laptopPriceElement.innerText = formatCurrency(laptop.price);
+
+    infoWrapperElement.classList.remove("invisible");
 }

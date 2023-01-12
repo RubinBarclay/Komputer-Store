@@ -15,8 +15,9 @@
     </nav>
 
     <main class="vh-100 container-fluid mt-5 px-5">
-        <div class="h-100 row row-cols-2 justify-content-center align-content-center">
-            <section class="col-md-3 m-4 p-4 gx-2 rounded bg-light">
+        <div class="h-100 row row-cols-2 gy-4 justify-content-between align-content-center" style="margin: 0 12%;">
+
+            <section class="col-md-3 d-flex flex-column p-4 rounded bg-light">
                 <h2>Joe Banker</h2>
                 <p class="d-flex justify-content-between mb-1">
                     <span>Balance:</span>
@@ -26,29 +27,51 @@
                     <span>Outstanding loan:</span>
                     <span id="outstandingLoan"></span>
                 </p>
-                <div class="d-grid">
+                <div class="d-grid mt-auto">
                     <button id="getLoan" class="btn btn-success">Get a loan</button>
                 </div>
             </section>
-            <section class="col-md-3 m-4 p-4 rounded bg-light">
+
+            <section class="col-md-3 d-flex flex-column p-4 rounded bg-light">
                 <h2>Work</h2>
                 <p class="d-flex justify-content-between">
                     <span>Pay:</span>
                     <span id="pay"></span>
                 </p>
-                <div id="repayLoanWrapper" class="d-grid invisible">
-                    <button id="repayLoan" class="btn btn-danger mb-1">Repay loan</button>
+                <div id="repayLoanWrapper" class="d-grid invisible mt-auto">
+                    <button id="repayLoan" class="btn btn-danger mb-2">Repay loan</button>
                 </div><div class="d-flex justify-content-stretch">
                     <button id="transfer" class="btn btn-primary me-1 flex-grow-1">Bank</button>
-                    <button id="work" class="btn btn-warning me-1 flex-grow-1">Work</button>
+                    <button id="work" class="btn btn-warning ms-1 flex-grow-1">Work</button>
                 </div>
             </section>
-            <section class="col-md-3 m-4 p-4 rounded bg-light">
+
+            <section class="col-md-3 p-4 rounded bg-light">
                 <h2>Laptops</h2>
+                <select id="dropdown" class="h-fixed overflow-auto">
+                    <option value="placeholder">Select a laptop</option>
+                </select>
+                <h3 class="fs-5 mt-2">Features:</h3>
+                <ul id="featureList"></ul>
             </section>
+
+            <section class="col-12 p-4 rounded bg-light">
+                <div id="infoWrapper" class="row align-items-center invisible">
+                    <div id="imageWrapper" class="col-md-2"></div>
+                    <div class="col-md-7">
+                        <h3 id="laptopTitle">Laptop text</h3>
+                        <p id="laptopDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde suscipit nesciunt aperiam amet aspernatur officia consectetur ipsam atque in laboriosam.</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h4 id="laptopPrice" class="text-bold">234</h4>
+                        <button class="btn btn-large btn-info">BUY NOW</button>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </main>
 
-    <script src="app.js"></script>
+    <script src="app.js" type="module"></script>
 </body>
 </html>
