@@ -106,7 +106,7 @@ function payBackLoan() {
     payElement.innerHTML = formatCurrency(pay);
 }
 
-// LAPTOP SELECTION
+// SECTION 3: LAPTOP SELECTION
 dropdownElement.addEventListener("change", selectLaptop);
 
 const featureListElement = document.getElementById("featureList");
@@ -139,6 +139,8 @@ const laptopTitleElement = document.getElementById("laptopTitle");
 const laptopDescriptionElement = document.getElementById("laptopDescription");
 const laptopPriceElement = document.getElementById("laptopPrice");
 
+let selectedLaptop = {};
+
 function selectLaptop(event) {
     featureListElement.innerHTML = "";
 
@@ -168,4 +170,23 @@ function selectLaptop(event) {
     laptopPriceElement.innerText = formatCurrency(laptop.price);
 
     infoWrapperElement.classList.remove("invisible");
+
+    selectedLaptop = laptop;
+}
+
+const buyButtonElement = document.getElementById("buy");
+buyButtonElement.addEventListener("click", buyLaptop);
+
+function buyLaptop() {
+
+    if (selectedLaptop && balance < selectedLaptop.price) {
+        window.alert("Insufficient balance to buy this laptop :(");
+        return;
+    }
+
+    balance -= selectedLaptop.price;
+
+    balanceElement.innerHTML = formatCurrency(balance);
+
+    window.alert("You purchased " + selectedLaptop.title);
 }
