@@ -1,3 +1,6 @@
+// Variables & manual .innerHTML updates can be replaced with a proxy object
+// https://stackoverflow.com/questions/1759987/listening-for-variable-changes-in-javascript
+
 // Variables
 let balance = 0;
 let outstandingLoan = 0;
@@ -7,10 +10,11 @@ let pay = 0;
 const balanceElement = document.getElementById("balance");
 const outstandingLoanElement = document.getElementById("outstandingLoan");
 const getLoanElement = document.getElementById("getLoan");
-const payOutstandingLoanElement = document.getElementById("balance");
 const payElement = document.getElementById("pay");
 const workElement = document.getElementById("work");
 const transferElement = document.getElementById("transfer");
+const repayLoanWrapperElement = document.getElementById("repayLoanWrapper");
+const repayLoanElement = document.getElementById("repayLoan");
 
 // SECTION 1: BANK
 
@@ -47,9 +51,10 @@ function getLoan() {
     balance += newLoan;
     outstandingLoan = newLoan;
 
-    // Update the UI to show new balance and loan
+    // Update the UI to show new balance, loan and pay back loan button
     balanceElement.innerHTML = formatCurrency(balance);
     outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
+    repayLoanWrapperElement.classList.remove("invisible");
 }
 
 // SECTION 2: WORK
@@ -57,6 +62,7 @@ payElement.innerText = formatCurrency(pay);
 
 workElement.addEventListener("click", getPaid);
 transferElement.addEventListener("click", transferSalary);
+repayLoanElement.addEventListener("click", payBackLoan);
 
 function getPaid() {
     pay += 100;
@@ -78,6 +84,23 @@ function transferSalary() {
     pay = 0;
 
     balanceElement.innerHTML = formatCurrency(balance);
+    outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
+    payElement.innerHTML = formatCurrency(pay);
+}
+
+function payBackLoan() {
+    if (outstandingLoan <= 0 || pay <= 0) return;
+
+    if (outstandingLoan < pay) {
+        pay -= outstandingLoan;
+        outstandingLoan = 0;
+    }
+
+    else {
+        outstandingLoan -= pay;
+        pay = 0;
+    }
+
     outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
     payElement.innerHTML = formatCurrency(pay);
 }
