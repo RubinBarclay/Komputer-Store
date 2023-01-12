@@ -1,12 +1,16 @@
 // Variables
 let balance = 0;
 let outstandingLoan = 0;
+let pay = 0;
 
 // Elements
 const balanceElement = document.getElementById("balance");
 const outstandingLoanElement = document.getElementById("outstandingLoan");
 const getLoanElement = document.getElementById("getLoan");
-const payOutstandingLoanButton = document.getElementById("balance");
+const payOutstandingLoanElement = document.getElementById("balance");
+const payElement = document.getElementById("pay");
+const workElement = document.getElementById("work");
+const transferElement = document.getElementById("transfer");
 
 // SECTION 1: BANK
 
@@ -49,6 +53,31 @@ function getLoan() {
 }
 
 // SECTION 2: WORK
-function getPaid() {}
+payElement.innerText = formatCurrency(pay);
 
-function transferSalary() {}
+workElement.addEventListener("click", getPaid);
+transferElement.addEventListener("click", transferSalary);
+
+function getPaid() {
+    pay += 100;
+    payElement.innerText = formatCurrency(pay);
+}
+
+function transferSalary() {
+    if (pay === 0) return;
+
+    let loanPayment = 0;
+
+    if (outstandingLoan > 0) {
+        loanPayment = pay * 0.1;    // 10% of pay
+        pay = pay * 0.9;            // 90% of pay
+    }
+
+    balance += pay;
+    outstandingLoan -= loanPayment;
+    pay = 0;
+
+    balanceElement.innerHTML = formatCurrency(balance);
+    outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
+    payElement.innerHTML = formatCurrency(pay);
+}
