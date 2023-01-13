@@ -13,9 +13,15 @@ const getLoanElement = document.getElementById("getLoan");
 const payElement = document.getElementById("pay");
 const workElement = document.getElementById("work");
 const transferElement = document.getElementById("transfer");
-const repayLoanWrapperElement = document.getElementById("repayLoanWrapper");
 const repayLoanElement = document.getElementById("repayLoan");
 const dropdownElement = document.getElementById("dropdown");
+const buyButtonElement = document.getElementById("buy");
+const featureListElement = document.getElementById("featureList");
+const infoWrapperElement = document.getElementById("infoWrapper");
+const imageWrapperElement = document.getElementById("imageWrapper");
+const laptopTitleElement = document.getElementById("laptopTitle");
+const laptopDescriptionElement = document.getElementById("laptopDescription");
+const laptopPriceElement = document.getElementById("laptopPrice");
 
 // SECTION 1: BANK
 
@@ -35,6 +41,11 @@ function formatCurrency(int) {
 }
 
 function getLoan() {
+    if (balance <= 0) {
+        window.alert("You are not eligible for a loan. Balance is too low...");
+        return;
+    }
+
     if (outstandingLoan > 0) {
         window.alert("You have to pay back your previous loan before getting a new one!");
         return;
@@ -55,7 +66,7 @@ function getLoan() {
     // Update the UI to show new balance, loan and pay back loan button
     balanceElement.innerHTML = formatCurrency(balance);
     outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
-    repayLoanWrapperElement.classList.remove("invisible");
+    repayLoanElement.classList.remove("invisible");
 }
 
 // SECTION 2: WORK
@@ -90,7 +101,9 @@ function transferSalary() {
 }
 
 function payBackLoan() {
-    if (outstandingLoan <= 0 || pay <= 0) return;
+    if (outstandingLoan <= 0 || pay <= 0) {
+        return;
+    }
 
     if (outstandingLoan < pay) {
         pay -= outstandingLoan;
@@ -102,14 +115,17 @@ function payBackLoan() {
         pay = 0;
     }
 
+    // Hide repay loan button once loan is paid back in full
+    if (outstandingLoan <= 0) {
+        repayLoanElement.classList.add("invisible");
+    }
+
     outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
     payElement.innerHTML = formatCurrency(pay);
 }
 
 // SECTION 3: LAPTOP SELECTION
 dropdownElement.addEventListener("change", selectLaptop);
-
-const featureListElement = document.getElementById("featureList");
 
 const laptopData = await fetchLaptopData();
 
@@ -133,11 +149,6 @@ async function fetchLaptopData() {
         console.error(error);
     }
 }
-const infoWrapperElement = document.getElementById("infoWrapper");
-const imageWrapperElement = document.getElementById("imageWrapper");
-const laptopTitleElement = document.getElementById("laptopTitle");
-const laptopDescriptionElement = document.getElementById("laptopDescription");
-const laptopPriceElement = document.getElementById("laptopPrice");
 
 let selectedLaptop = {};
 
@@ -151,7 +162,7 @@ function selectLaptop(event) {
 
     const index = event.target.value - 1;
     const laptop = laptopData[index];
-    const imageURL = "https://hickory-quilled-actress.glitch.me/" + laptop.image;
+    const imageURL = `https://hickory-quilled-actress.glitch.me/${laptop.image}`;
 
     for (let feature of laptop.specs) {
         const listElement = document.createElement("li");
@@ -174,7 +185,6 @@ function selectLaptop(event) {
     selectedLaptop = laptop;
 }
 
-const buyButtonElement = document.getElementById("buy");
 buyButtonElement.addEventListener("click", buyLaptop);
 
 function buyLaptop() {
