@@ -161,7 +161,7 @@ function selectLaptop(event) {
 
     const imageElement = document.createElement("img");
     imageElement.setAttribute("src", imageURL);
-    imageElement.classList.add("img-fluid");
+    imageElement.classList.add("w-full");
     imageWrapperElement.innerHTML = "";
     imageWrapperElement.appendChild(imageElement);
 

@@ -4,67 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
 </head>
 <body>
-    <nav class="navbar navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <h1 class="navbar-brand">Komputer Store</h1>
-        </div>
+    <nav class="h-20 bg-gray-800 px-48 flex items-center">
+        <h1 class="text-gray-50 text-4xl font-bold">Komputer Store</h1>
     </nav>
 
-    <main class="vh-100 container-fluid mt-5 px-5">
-        <div class="h-100 row row-cols-2 gy-4 justify-content-between align-content-center" style="margin: 0 12%;">
+    <main class="h-full mt-16 px-48">
+        <div class="grid grid-cols-3 grid-rows-2 gap-8">
 
-            <section class="col-md-3 d-flex flex-column p-4 rounded bg-light">
-                <h2>Joe Banker</h2>
-                <p class="d-flex justify-content-between mb-1">
+            <section class="flex flex-col h-64 p-6 bg-gray-200 rounded">
+                <h2 class="text-2xl font-bold mb-4">Joe Banker</h2>
+                <p class="flex justify-between mb-2">
                     <span>Balance:</span>
                     <span id="balance"></span>
                 </p>
-                <p class="d-flex justify-content-between">
+                <p class="flex justify-between mb-2">
                     <span>Outstanding loan:</span>
                     <span id="outstandingLoan"></span>
                 </p>
-                <div class="d-grid mt-auto">
-                    <button id="getLoan" class="btn btn-success">Get a loan</button>
-                </div>
+                <button id="getLoan" class="w-full bg-violet-500 text-white py-2 mt-auto rounded-md font-bold">Get a loan</button>
             </section>
 
-            <section class="col-md-3 d-flex flex-column p-4 rounded bg-light">
-                <h2>Work</h2>
-                <p class="d-flex justify-content-between">
+            <section class="flex flex-col h-64 p-6 bg-gray-200 rounded">
+                <h2 class="text-2xl font-bold mb-4">Work</h2>
+                <p class="flex justify-between mb-2">
                     <span>Pay:</span>
                     <span id="pay"></span>
                 </p>
-                <div id="repayLoanWrapper" class="d-grid invisible mt-auto">
-                    <button id="repayLoan" class="btn btn-danger mb-2">Repay loan</button>
-                </div><div class="d-flex justify-content-stretch">
-                    <button id="transfer" class="btn btn-primary me-1 flex-grow-1">Bank</button>
-                    <button id="work" class="btn btn-warning ms-1 flex-grow-1">Work</button>
+                <button id="repayLoan" class="w-full bg-violet-500 text-white py-2 mt-auto mb-2 rounded-md font-bold invisible">Repay loan</button>
+                <div class="flex justify-between">
+                    <button id="transfer" class="flex-grow bg-violet-500 text-white py-2 mr-1 rounded-md font-bold">Bank</button>
+                    <button id="work" class="flex-grow bg-violet-500 text-white py-2 ml-1 rounded-md font-bold">Work</button>
                 </div>
             </section>
 
-            <section class="col-md-3 p-4 rounded bg-light">
-                <h2>Laptops</h2>
-                <select id="dropdown" class="h-fixed overflow-auto">
+            <section class="flex flex-col h-64 p-6 bg-gray-200 rounded">
+                <h2 class="text-2xl font-bold mb-4">Laptops</h2>
+                <select id="dropdown" class="bg-gray-100 p-2">
                     <option value="placeholder">Select a laptop</option>
                 </select>
-                <h3 class="fs-5 mt-2">Features:</h3>
-                <ul id="featureList"></ul>
+                <h3 class="text-lg font-bold my-2">Features:</h3>
+                <ul id="featureList" class="overflow-auto list-disc"></ul>
             </section>
 
-            <section class="col-12 p-4 rounded bg-light">
-                <div id="infoWrapper" class="row align-items-center invisible">
-                    <div id="imageWrapper" class="col-md-2"></div>
-                    <div class="col-md-7">
-                        <h3 id="laptopTitle">Laptop text</h3>
+            <section class="col-span-full p-6 bg-gray-200 rounded">
+                <div id="infoWrapper" class="h-full grid grid-cols-12 items-center invisible">
+                    <div id="imageWrapper" class="col-span-2"></div>
+                    <div class="col-span-7 ml-4">
+                        <h3 id="laptopTitle"  class="text-3xl font-bold mb-3">Laptop text</h3>
                         <p id="laptopDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde suscipit nesciunt aperiam amet aspernatur officia consectetur ipsam atque in laboriosam.</p>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <h4 id="laptopPrice" class="text-bold">234</h4>
-                        <button id="buy" class="btn btn-large btn-info">BUY NOW</button>
+                    <div class="col-span-3 text-center">
+                        <h4 id="laptopPrice" class="text-3xl mb-3">200 kr</h4>
+                        <button id="buy" class="flex-grow bg-violet-500 text-white px-8 py-2 mr-1 rounded-md font-bold">BUY NOW</button>
                     </div>
                 </div>
             </section>
