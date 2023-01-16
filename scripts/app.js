@@ -1,5 +1,6 @@
 import fetchLaptopData from "./api/laptops.js";
 import { getLaptopById, getLaptops, setCurrentLaptop, setLaptops } from "./laptops/laptopsView.js";
+import { formatCurrency } from "./_shared/functions.js";
 
 // Variables & manual .innerHTML updates can be replaced with a proxy object
 // https://stackoverflow.com/questions/1759987/listening-for-variable-changes-in-javascript
@@ -31,16 +32,6 @@ balanceElement.innerHTML = formatCurrency(balance);
 outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan);
 
 getLoanElement.addEventListener('click', getLoan);
-
-function formatCurrency(int) {
-    if (Number.isNaN(int)) {
-        console.error("Currency must be of type integer");
-        return;
-    }
-
-    // Return int as a properly formatted string 
-    return int.toLocaleString("sv-SE", { style:"currency", currency:"SEK" });
-}
 
 function getLoan() {
     if (balance <= 0) {
