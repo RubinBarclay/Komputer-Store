@@ -1,3 +1,5 @@
+import fetchLaptopData from "./api/laptops.js";
+
 // Variables & manual .innerHTML updates can be replaced with a proxy object
 // https://stackoverflow.com/questions/1759987/listening-for-variable-changes-in-javascript
 
@@ -129,26 +131,15 @@ dropdownElement.addEventListener("change", selectLaptop);
 
 const laptopData = await fetchLaptopData();
 
-async function fetchLaptopData() {
-    try {
-        const response = await fetch("https://hickory-quilled-actress.glitch.me/computers");
-        const data = await response.json();
+// Populate dropdown list for laptops
+for (let laptop of laptopData) {
+    const optionElement = document.createElement("option");
+    optionElement.innerText = laptop.title;
+    optionElement.value = laptop.id;
 
-        for (let laptop of data) {
-            const optionElement = document.createElement("option");
-            optionElement.innerText = laptop.title;
-            optionElement.value = laptop.id;
-
-            dropdownElement.appendChild(optionElement);
-        }
-
-        return data;
-    } 
-    
-    catch (error) {
-        console.error(error);
-    }
+    dropdownElement.appendChild(optionElement);
 }
+
 
 let selectedLaptop = {};
 
