@@ -1,4 +1,5 @@
 import fetchLaptopData from "./api/laptops.js";
+import { getLaptopById, getLaptops, setCurrentLaptop, setLaptops } from "./laptops/laptopsView.js";
 
 // Variables & manual .innerHTML updates can be replaced with a proxy object
 // https://stackoverflow.com/questions/1759987/listening-for-variable-changes-in-javascript
@@ -19,7 +20,6 @@ const repayLoanElement = document.getElementById("repayLoan");
 const dropdownElement = document.getElementById("dropdown");
 const buyButtonElement = document.getElementById("buy");
 const featureListElement = document.getElementById("featureList");
-const infoWrapperElement = document.getElementById("infoWrapper");
 const imageWrapperElement = document.getElementById("imageWrapper");
 const laptopTitleElement = document.getElementById("laptopTitle");
 const laptopDescriptionElement = document.getElementById("laptopDescription");
@@ -131,8 +131,17 @@ dropdownElement.addEventListener("change", selectLaptop);
 
 const laptopData = await fetchLaptopData();
 
+setLaptops(laptopData)
+setCurrentLaptop(laptopData[0])
+
+const laptops = getLaptops()
+let currentLaptop = laptopData[0]
+
+updateFeatureList(currentLaptop)
+updateDescription(currentLaptop)
+
 // Populate dropdown list for laptops
-for (let laptop of laptopData) {
+for (let laptop of laptops) {
     const optionElement = document.createElement("option");
     optionElement.innerText = laptop.title;
     optionElement.value = laptop.id;
@@ -140,54 +149,54 @@ for (let laptop of laptopData) {
     dropdownElement.appendChild(optionElement);
 }
 
+function updateFeatureList(laptop) {
+    featureListElement.replaceChildren()
 
-let selectedLaptop = {};
+    const listElements = laptop.specs.map(feature => {
+        const listElement = document.createElement("li")
+        listElement.innerText = " - " + feature
+        return listElement
+    })
 
-function selectLaptop(event) {
-    featureListElement.innerHTML = "";
+    featureListElement.replaceChildren(...listElements)
+}
 
-    if (event.target.value === "placeholder") {
-        infoWrapperElement.classList.add("invisible");
-        return;
-    }
+function updateDescription(laptop) {
 
-    const index = event.target.value - 1;
-    const laptop = laptopData[index];
     const imageURL = `https://hickory-quilled-actress.glitch.me/${laptop.image}`;
-
-    for (let feature of laptop.specs) {
-        const listElement = document.createElement("li");
-        listElement.innerText = feature;
-        featureListElement.appendChild(listElement);
-    }
-
     const imageElement = document.createElement("img");
     imageElement.setAttribute("src", imageURL);
     imageElement.classList.add("w-full");
-    imageWrapperElement.innerHTML = "";
-    imageWrapperElement.appendChild(imageElement);
+    imageWrapperElement.replaceChildren(imageElement);
 
     laptopTitleElement.innerText = laptop.title;
     laptopDescriptionElement.innerText = laptop.description;
     laptopPriceElement.innerText = formatCurrency(laptop.price);
+}
 
-    infoWrapperElement.classList.remove("invisible");
+function selectLaptop(event) {
 
-    selectedLaptop = laptop;
+    const id = event.target.value
+    const laptop = getLaptopById(id)
+
+    setCurrentLaptop(laptop)
+
+    updateFeatureList(laptop)
+    updateDescription(laptop)
 }
 
 buyButtonElement.addEventListener("click", buyLaptop);
 
 function buyLaptop() {
 
-    if (selectedLaptop && balance < selectedLaptop.price) {
+    if (currentLaptop && balance < currentLaptop.price) {
         window.alert("Insufficient balance to buy this laptop :(");
         return;
     }
 
-    balance -= selectedLaptop.price;
+    balance -= currentLaptop.price;
 
     balanceElement.innerHTML = formatCurrency(balance);
 
-    window.alert("You purchased " + selectedLaptop.title);
+    window.alert("You purchased " + currentLaptop.title);
 }
