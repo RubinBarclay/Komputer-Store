@@ -1,5 +1,6 @@
-import { getBalance, setBalance } from "../bank/bankView"
-import { getCurrentLaptop, setCurrentLaptop } from "./laptopsView"
+import { getBalance, setBalance } from "../bank/bankView.js"
+import { formatCurrency } from "../_shared/functions.js"
+import { getCurrentLaptop, getLaptopById, setCurrentLaptop } from "./laptopsView.js"
 
 const laptopFeaturesElement = document.getElementById("featureList")
 const imageWrapperElement = document.getElementById("imageWrapper")

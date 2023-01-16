@@ -1,5 +1,6 @@
-import { getSalary, setSalary } from "../work/workView"
-import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "./bankView"
+import { getSalary, setSalary } from "../work/workView.js"
+import { formatCurrency } from "../_shared/functions.js"
+import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "./bankView.js"
 
 /**
  * Apply and recieve a loan if you are eligible
@@ -31,6 +32,7 @@ export function getLoan() {
     setOutstandingLoan(newLoan)
 
     // Update the UI to show "pay back loan" button
+    const repayLoanElement = document.getElementById("repayLoan")
     repayLoanElement.classList.remove("invisible")
 }
 
@@ -57,6 +59,7 @@ export function payBackLoan() {
 
     // Hide repay loan button once loan is paid back in full
     if (getOutstandingLoan() <= 0) {
+        const repayLoanElement = document.getElementById("repayLoan")
         repayLoanElement.classList.add("invisible")
     }
 }

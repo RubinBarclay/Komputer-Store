@@ -1,4 +1,4 @@
-import { formatCurrency } from "../_shared/functions.js";
+import { formatCurrency } from "../_shared/functions.js"
 
 let salary = 0
 

@@ -13,8 +13,8 @@ const buyButtonElement = document.getElementById("buy")
 
 getLoanElement.addEventListener('click', getLoan)
 workElement.addEventListener("click", work)
-transferElement.addEventListener("click", transferSalary)
 repayLoanElement.addEventListener("click", payBackLoan)
+transferElement.addEventListener("click", transferSalary)
 dropdownElement.addEventListener("change", selectLaptop)
 buyButtonElement.addEventListener("click", buyLaptop)
 

@@ -1,5 +1,5 @@
-import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "../bank/bankView"
-import { getSalary, setSalary } from "./workView"
+import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "../bank/bankView.js"
+import { getSalary, setSalary } from "./workView.js"
 
 
 /**
