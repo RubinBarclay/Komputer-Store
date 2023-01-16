@@ -7,6 +7,10 @@ const laptopTitleElement = document.getElementById("laptopTitle")
 const laptopDescriptionElement = document.getElementById("laptopDescription")
 const laptopPriceElement = document.getElementById("laptopPrice")
 
+/**
+ * A onChange handler that updates the selected laptop
+ * @param {Event} event A javascript event object
+ */
 export function selectLaptop(event) {
     const id = event.target.value
     const laptop = getLaptopById(id)
@@ -16,6 +20,10 @@ export function selectLaptop(event) {
     updateLaptopDescription(laptop)
 }
 
+/**
+ * Renders the laptop description to match the selected laptop
+ * @param {Object} laptop A laptop object fetched from the laptop API
+ */
 export function updateLaptopDescription(laptop) {
     // Update image
     const imageURL = `https://hickory-quilled-actress.glitch.me/${laptop.image}`
@@ -39,6 +47,9 @@ export function updateLaptopDescription(laptop) {
     laptopFeaturesElement.replaceChildren(...listElements)
 }
 
+/**
+ * Use your bank funds to purchase a new laptop 
+ */
 export function buyLaptop() {
     const balance = getBalance()
     const currentLaptop = getCurrentLaptop()

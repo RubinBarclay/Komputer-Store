@@ -1,6 +1,9 @@
 import { getSalary, setSalary } from "../work/workView"
 import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "./bankView"
 
+/**
+ * Apply and recieve a loan if you are eligible
+ */
 export function getLoan() {
     const balance = getBalance()
     const outstandingLoan = getOutstandingLoan()
@@ -27,10 +30,13 @@ export function getLoan() {
     setBalance(balance + newLoan)
     setOutstandingLoan(newLoan)
 
-    // Update the UI to show new balance, loan and pay back loan button
+    // Update the UI to show "pay back loan" button
     repayLoanElement.classList.remove("invisible")
 }
 
+/**
+ * Pay back your outstanding loan with your salary
+ */
 export function payBackLoan() {
     const outstandingLoan = getOutstandingLoan()
     const salary = getSalary()

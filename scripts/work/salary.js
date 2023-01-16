@@ -2,11 +2,19 @@ import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "
 import { getSalary, setSalary } from "./workView"
 
 
+/**
+ * Earn 100 kr everytime you work
+ */
 export function work() {
     const salary = getSalary()
     setSalary(salary + 100)
 }
 
+/**
+ * Transfer your salary to your bank account
+ * 
+ * If you have an outstanding loan, 10% is taken out of your transfer and used to pay your loan.
+ */
 export function transferSalary() {
     const balance = getBalance()
     const outstandingLoan = getOutstandingLoan()

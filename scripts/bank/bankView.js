@@ -16,11 +16,11 @@ export const getBalance = () => balance
 export const getOutstandingLoan = () => outstandingLoan
 
 export const setBalance = (newBalance) => {
-    balanceElement.innerText = formatCurrency(newBalance)                   // re-render updated balance value
+    balanceElement.innerText = formatCurrency(newBalance)                   // re-render updated balance
     balance = newBalance 
 }
 
 export const setOutstandingLoan = (newOutstandingLoan) => {
-    outstandingLoanElement.innerText = formatCurrency(newOutstandingLoan)   // re-render updated loan value
+    outstandingLoanElement.innerText = formatCurrency(newOutstandingLoan)   // re-render updated loan
     outstandingLoan = newOutstandingLoan
 }
