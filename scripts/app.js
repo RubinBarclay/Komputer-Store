@@ -1,4 +1,5 @@
 import fetchLaptopData from "./api/laptops.js"
+import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "./bank/bankView.js"
 import { getLaptopById, getLaptops, setCurrentLaptop, setLaptops } from "./laptops/laptopsView.js"
 import { formatCurrency } from "./_shared/functions.js"
 
@@ -6,13 +7,9 @@ import { formatCurrency } from "./_shared/functions.js"
 // https://stackoverflow.com/questions/1759987/listening-for-variable-changes-in-javascript
 
 // Variables
-let balance = 0
-let outstandingLoan = 0
 let salary = 0
 
 // Elements
-const balanceElement = document.getElementById("balance")
-const outstandingLoanElement = document.getElementById("outstandingLoan")
 const getLoanElement = document.getElementById("getLoan")
 const salaryElement = document.getElementById("salary")
 const workElement = document.getElementById("work")
@@ -28,9 +25,6 @@ const laptopPriceElement = document.getElementById("laptopPrice")
 
 // SECTION 1: BANK
 
-balanceElement.innerHTML = formatCurrency(balance)
-outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan)
-
 getLoanElement.addEventListener('click', getLoan)
 workElement.addEventListener("click", getPaid)
 transferElement.addEventListener("click", transferSalary)
@@ -40,6 +34,9 @@ buyButtonElement.addEventListener("click", buyLaptop)
 
 
 function getLoan() {
+    const balance = getBalance()
+    const outstandingLoan = getOutstandingLoan()
+
     if (balance <= 0) {
         window.alert("You are not eligible for a loan. Balance is too low...")
         return
@@ -59,12 +56,10 @@ function getLoan() {
     }
 
     // Update balance and loan values
-    balance += newLoan
-    outstandingLoan = newLoan
+    setBalance(balance + newLoan)
+    setOutstandingLoan(newLoan)
 
     // Update the UI to show new balance, loan and pay back loan button
-    balanceElement.innerHTML = formatCurrency(balance)
-    outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan)
     repayLoanElement.classList.remove("invisible")
 }
 
@@ -77,6 +72,9 @@ function getPaid() {
 }
 
 function transferSalary() {
+    const balance = getBalance()
+    const outstandingLoan = getOutstandingLoan()
+
     if (salary === 0) return
 
     let loanPayment = 0
@@ -86,16 +84,16 @@ function transferSalary() {
         salary = salary * 0.9      // 90% of salary
     }
 
-    balance += salary
-    outstandingLoan -= loanPayment
+    setBalance(balance + salary)
+    setOutstandingLoan(outstandingLoan - loanPayment)
     salary = 0
 
-    balanceElement.innerHTML = formatCurrency(balance)
-    outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan)
     salaryElement.innerHTML = formatCurrency(salary)
 }
 
 function payBackLoan() {
+    const outstandingLoan = getOutstandingLoan()
+
     if (outstandingLoan <= 0 || salary <= 0) {
         return
     }
@@ -115,7 +113,7 @@ function payBackLoan() {
         repayLoanElement.classList.add("invisible")
     }
 
-    outstandingLoanElement.innerHTML = formatCurrency(outstandingLoan)
+    setOutstandingLoan(outstandingLoan - loanPayment)
     salaryElement.innerHTML = formatCurrency(salary)
 }
 
@@ -141,10 +139,6 @@ for (let laptop of laptops) {
     dropdownElement.appendChild(optionElement)
 }
 
-/**
- * arst arsta rstarst
- * @param {Object} laptop - A javscript object retrieved from the laptop API
- */
 function updateFeatureList(laptop) {
     featureListElement.replaceChildren()
 
@@ -182,15 +176,14 @@ function selectLaptop(event) {
 }
 
 function buyLaptop() {
+    const balance = getBalance()
 
     if (balance < currentLaptop.price) {
         window.alert("Insufficient balance to buy this laptop :(")
         return
     }
 
-    balance -= currentLaptop.price
-
-    balanceElement.innerHTML = formatCurrency(balance)
+    setBalance(balance - currentLaptop.price)
 
     window.alert("You purchased " + currentLaptop.title)
 }
