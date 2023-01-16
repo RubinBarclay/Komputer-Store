@@ -1,17 +1,11 @@
 import fetchLaptopData from "./api/laptops.js"
 import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "./bank/bankView.js"
 import { getLaptopById, getLaptops, setCurrentLaptop, setLaptops } from "./laptops/laptopsView.js"
+import { getSalary, setSalary } from "./work/workView.js"
 import { formatCurrency } from "./_shared/functions.js"
-
-// Variables & manual .innerHTML updates can be replaced with a proxy object
-// https://stackoverflow.com/questions/1759987/listening-for-variable-changes-in-javascript
-
-// Variables
-let salary = 0
 
 // Elements
 const getLoanElement = document.getElementById("getLoan")
-const salaryElement = document.getElementById("salary")
 const workElement = document.getElementById("work")
 const transferElement = document.getElementById("transfer")
 const repayLoanElement = document.getElementById("repayLoan")
@@ -64,57 +58,54 @@ function getLoan() {
 }
 
 // SECTION 2: WORK
-salaryElement.innerText = formatCurrency(salary)
 
 function getPaid() {
-    salary += 100
-    salaryElement.innerText = formatCurrency(salary)
+    const salary = getSalary()
+    setSalary(salary + 100)
 }
 
 function transferSalary() {
     const balance = getBalance()
     const outstandingLoan = getOutstandingLoan()
+    const salary = getSalary()
 
     if (salary === 0) return
 
-    let loanPayment = 0
-
     if (outstandingLoan > 0) {
-        loanPayment = salary * 0.1 // 10% of salary
-        salary = salary * 0.9      // 90% of salary
+        const loanPayment = salary * 0.1    // 10% of salary
+        const deductedSalary = salary * 0.9 // 90% of salary
+
+        setBalance(balance + deductedSalary)
+        setOutstandingLoan(outstandingLoan - loanPayment)
+    } else {
+        setBalance(balance + salary)
     }
 
-    setBalance(balance + salary)
-    setOutstandingLoan(outstandingLoan - loanPayment)
-    salary = 0
-
-    salaryElement.innerHTML = formatCurrency(salary)
+    setSalary(0)  // Reset salary
 }
 
 function payBackLoan() {
     const outstandingLoan = getOutstandingLoan()
+    const salary = getSalary()
 
     if (outstandingLoan <= 0 || salary <= 0) {
         return
     }
 
     if (outstandingLoan < salary) {
-        salary -= outstandingLoan
-        outstandingLoan = 0
+        setSalary(salary - outstandingLoan)
+        setOutstandingLoan(0)
     }
 
     else {
-        outstandingLoan -= salary
-        salary = 0
+        setOutstandingLoan(outstandingLoan -= salary)
+        setSalary(0)
     }
 
     // Hide repay loan button once loan is paid back in full
-    if (outstandingLoan <= 0) {
+    if (getOutstandingLoan() <= 0) {
         repayLoanElement.classList.add("invisible")
     }
-
-    setOutstandingLoan(outstandingLoan - loanPayment)
-    salaryElement.innerHTML = formatCurrency(salary)
 }
 
 // SECTION 3: LAPTOP SELECTION
@@ -152,20 +143,20 @@ function updateFeatureList(laptop) {
 }
 
 function updateDescription(laptop) {
-
+    // Update image
     const imageURL = `https://hickory-quilled-actress.glitch.me/${laptop.image}`
     const imageElement = document.createElement("img")
     imageElement.setAttribute("src", imageURL)
     imageElement.classList.add("w-full")
     imageWrapperElement.replaceChildren(imageElement)
 
+    // Update description text
     laptopTitleElement.innerText = laptop.title
     laptopDescriptionElement.innerText = laptop.description
     laptopPriceElement.innerText = formatCurrency(laptop.price)
 }
 
 function selectLaptop(event) {
-
     const id = event.target.value
     const laptop = getLaptopById(id)
 
