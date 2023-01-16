@@ -1,10 +1,9 @@
 import fetchLaptopData from "./api/laptops.js"
 import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "./bank/bankView.js"
-import { getLaptopById, getLaptops, setCurrentLaptop, setLaptops } from "./laptops/laptopsView.js"
+import { getCurrentLaptop, getLaptopById, getLaptops, setCurrentLaptop, setLaptops } from "./laptops/laptopsView.js"
 import { getSalary, setSalary } from "./work/workView.js"
 import { formatCurrency } from "./_shared/functions.js"
 
-// Elements
 const getLoanElement = document.getElementById("getLoan")
 const workElement = document.getElementById("work")
 const transferElement = document.getElementById("transfer")
@@ -17,8 +16,6 @@ const laptopTitleElement = document.getElementById("laptopTitle")
 const laptopDescriptionElement = document.getElementById("laptopDescription")
 const laptopPriceElement = document.getElementById("laptopPrice")
 
-// SECTION 1: BANK
-
 getLoanElement.addEventListener('click', getLoan)
 workElement.addEventListener("click", getPaid)
 transferElement.addEventListener("click", transferSalary)
@@ -26,6 +23,24 @@ repayLoanElement.addEventListener("click", payBackLoan)
 dropdownElement.addEventListener("change", selectLaptop)
 buyButtonElement.addEventListener("click", buyLaptop)
 
+const laptopData = await fetchLaptopData()
+
+setLaptops(laptopData)
+setCurrentLaptop(laptopData[0])
+
+updateFeatureList(laptopData[0])
+updateDescription(laptopData[0])
+
+const laptops = getLaptops()
+
+// Populate dropdown list for laptops
+for (let laptop of laptops) {
+    const optionElement = document.createElement("option")
+    optionElement.innerText = laptop.title
+    optionElement.value = laptop.id
+
+    dropdownElement.appendChild(optionElement)
+}
 
 function getLoan() {
     const balance = getBalance()
@@ -56,8 +71,6 @@ function getLoan() {
     // Update the UI to show new balance, loan and pay back loan button
     repayLoanElement.classList.remove("invisible")
 }
-
-// SECTION 2: WORK
 
 function getPaid() {
     const salary = getSalary()
@@ -108,28 +121,6 @@ function payBackLoan() {
     }
 }
 
-// SECTION 3: LAPTOP SELECTION
-
-const laptopData = await fetchLaptopData()
-
-setLaptops(laptopData)
-setCurrentLaptop(laptopData[0])
-
-const laptops = getLaptops()
-let currentLaptop = laptopData[0]
-
-updateFeatureList(currentLaptop)
-updateDescription(currentLaptop)
-
-// Populate dropdown list for laptops
-for (let laptop of laptops) {
-    const optionElement = document.createElement("option")
-    optionElement.innerText = laptop.title
-    optionElement.value = laptop.id
-
-    dropdownElement.appendChild(optionElement)
-}
-
 function updateFeatureList(laptop) {
     featureListElement.replaceChildren()
 
@@ -168,6 +159,7 @@ function selectLaptop(event) {
 
 function buyLaptop() {
     const balance = getBalance()
+    const currentLaptop = getCurrentLaptop()
 
     if (balance < currentLaptop.price) {
         window.alert("Insufficient balance to buy this laptop :(")
