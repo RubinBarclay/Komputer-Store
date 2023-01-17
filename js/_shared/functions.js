@@ -10,5 +10,5 @@ export function formatCurrency(int) {
     }
 
     // Return int as a properly formatted string 
-    return int.toLocaleString("sv-SE", { style:"currency", currency:"SEK" })
+    return int.toLocaleString("sv-SE", { style: "currency", currency: "SEK" })
 }

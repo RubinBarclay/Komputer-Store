@@ -53,7 +53,7 @@ export function payBackLoan() {
     }
 
     else {
-        setOutstandingLoan(outstandingLoan -= salary)
+        setOutstandingLoan(outstandingLoan - salary)
         setSalary(0)
     }
 
