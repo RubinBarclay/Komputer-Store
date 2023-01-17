@@ -1,5 +1,5 @@
 import { getSalary, setSalary } from "../work/workView.js"
-import { formatCurrency } from "../_shared/functions.js"
+import { formatCurrency } from "../shared/functions.js"
 import { getBalance, getOutstandingLoan, setBalance, setOutstandingLoan } from "./bankView.js"
 
 /**
